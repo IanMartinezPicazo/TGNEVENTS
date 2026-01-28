@@ -29,6 +29,7 @@
                 android:layout_weight="1">
 
                 <ImageView
+                    android:id="@+id/eventItemImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
@@ -59,7 +60,7 @@
                             android:layout_height="wrap_content" />
 
                         <TextView
-                            android:id="@+id/timeText"
+                            android:id="@+id/eventItemTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="12:00"
@@ -87,7 +88,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/titleText"
+                    android:id="@+id/eventItemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Event"
@@ -100,7 +101,7 @@
                     android:layout_height="15dp" />
 
                 <TextView
-                    android:id="@+id/descriptionText"
+                    android:id="@+id/eventItemDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Description"

@@ -132,6 +132,8 @@ public final class MainMenu extends AppCompatActivity
                 "All proceeds go toward the local youth sports program."
         ));
 
+        // Sorts events by proximity of date
+        events.sort((e1, e2) -> e1.getDateTime().compareTo(e2.getDateTime()));
 
         RecyclerView recyclerView = new RecyclerView(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

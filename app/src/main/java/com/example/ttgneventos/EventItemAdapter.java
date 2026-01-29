@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.flexbox.FlexboxLayoutManager;
+
 import java.util.List;
 
 public final class EventItemAdapter extends RecyclerView.Adapter<EventItemAdapter.EventItem>
@@ -31,7 +33,12 @@ public final class EventItemAdapter extends RecyclerView.Adapter<EventItemAdapte
 
         holder.getEventItemTitle().setText(event.getTitle());
         holder.getEventItemDescription().setText(event.getDescription());
-        holder.getEventItemTime().setText(event.getDateTime().toString());
+        holder.getEventItemTime().setText(event.getTime().toString());
+
+        ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+        FlexboxLayoutManager.LayoutParams flexboxLp = (FlexboxLayoutManager.LayoutParams) lp;
+        flexboxLp.setFlexBasisPercent(0.50f);
+        flexboxLp.setFlexGrow(0.0f);
     }
 
     @Override

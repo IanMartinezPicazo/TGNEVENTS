@@ -13,6 +13,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +24,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private Button Iniciar;
     private EditText Correo;
     private EditText Password;
-
-    public static List<Usuario> DBusers = new ArrayList<>();
-
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +44,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         Iniciar.setOnClickListener(this);
         Correo = findViewById(R.id.Correo);
         Password = findViewById(R.id.Password);
-
-        if (DBusers.isEmpty()) {
-            DBusers.add(new Usuario("admin", "admin@gmail.com", "admin"));
-            DBusers.add(new Usuario("user", "steban@gmail.com", "Jh1191jh"));
-            DBusers.add(new Usuario("pepe", "pepe@gmail.com", "1234"));
-            DBusers.get(0).setAdmin(true);
-        }
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
 
     }
@@ -66,9 +63,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
             case R.id.Iniciar:
                 // 1. Verificamos el formato antes de entrar al bucle
-                if (c.isEmpty() && p.isEmpty()) {
-                    Correo.setError("El correo no puede estar vacío");
-                    Password.setError("La contraseña no puede estar vacía");
+                if (!validarCampos(c, p)) {
                     return;
                 }
 
@@ -77,31 +72,55 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     return;
                 }
 
-                // 2. Buscamos en la "base de datos"
-                boolean encontrado = false;
-                for (int i = 0; i < DBusers.size(); i++) {
-                    if (DBusers.get(i).getCorreo().equals(c) && DBusers.get(i).getContraseña().equals(p)) {
-                        encontrado = true;
+                mAuth.signInWithEmailAndPassword(c, p)
+                            .addOnCompleteListener(this, task -> {
+                                if (task.isSuccessful()) {
+                                    ObtenerDatosUsuario(mAuth.getCurrentUser().getUid());
 
-
-                        Intent intent = new Intent(this, Inicio.class);
-                        intent.putExtra("admin", DBusers.get(i).isAdmin());
-
-                        startActivity(intent);
-                        finish(); // Opcional: cierra el Login para que no puedan volver atrás
-                        break;
-                    }
-                }
-
-                if (!encontrado) {
-                    Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
-                }
+                                } else {
+                                    Toast.makeText(this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 break;
-
         }
 
 
     }
 
 
-}
+
+
+
+        private void ObtenerDatosUsuario(String uid){
+            db.collection("usuarios").document(uid).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            Usuario usuario = documentSnapshot.toObject(Usuario.class);
+
+                            if (usuario != null) {
+                                Intent intent = new Intent(Login.this, Inicio.class);
+                                intent.putExtra("Es_admin", usuario.isAdmin());
+                                startActivity(intent);
+                                finish();
+                            }
+
+                        }
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(Login.this, "Error al obtener los datos del usuario", Toast.LENGTH_SHORT).show();
+                    });
+        }
+
+        private boolean validarCampos(String c, String p) {
+            if (c.isEmpty() || p.isEmpty()) {
+                Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return true;
+        }
+
+
+    }
+
+
+
+

@@ -13,6 +13,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +25,8 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
     private EditText Correo_nuevo;
     private EditText Password_nueva;
     private Button Registrarse;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,8 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
         Password_nueva = findViewById(R.id.Password_nueva);
         Registrarse = findViewById(R.id.Registrarse);
         Registrarse.setOnClickListener(this);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
 
     }
@@ -75,25 +83,40 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
                 return;
             }
 
-            // 4. Comprobar si el correo ya existe
-            boolean existe = false;
-            for (Usuario u : Login.DBusers) {
-                if (u.getCorreo().equalsIgnoreCase(correo)) {
-                    existe = true;
-                    break;
-                }
-            }
-
-            if (existe) {
-                Toast.makeText(this, "Error: Este correo ya está registrado", Toast.LENGTH_SHORT).show();
-            } else {
                 // AQUÍ es donde realmente añadirías el usuario a tu lista persistente
-                Login.DBusers.add(new Usuario(nombre, correo, password));
-                Toast.makeText(this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, Login.class);
-                startActivity(intent);
-                finish();
-            }
+                mAuth.createUserWithEmailAndPassword(correo, password).addOnCompleteListener(this, task -> {
+                            if (task.isSuccessful()) {
+                                //1. Recibe el ID asignado por BD
+                                String uid = mAuth.getCurrentUser().getUid();
+
+                                //2. Crea el usuario en la base de datos
+                                Usuario nuevoUsuario = new Usuario(nombre, correo, password);
+                                nuevoUsuario.setAdmin(false);
+
+                                //3. Guarda el usuario en la base de datos
+                                db.collection("usuarios").document(uid).set(nuevoUsuario)
+                                        .addOnSuccessListener(aVoid -> {
+                                            // El usuario se ha registrado correctamente
+                                            Toast.makeText(this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(this, Login.class);
+                                            startActivity(intent);
+                                            finish();
+
+                                        }
+                                    ).addOnFailureListener(e -> {
+                                            // Error al guardar el usuario en la base de datos
+                                            Toast.makeText(this, "Error al registrar el usuario", Toast.LENGTH_SHORT).show();
+                                        });
+
+
+                            }else if(task.getException() instanceof FirebaseAuthUserCollisionException){
+                                Toast.makeText(this, "Error: Este correo ya está registrado", Toast.LENGTH_SHORT).show();
+                            }else {
+                                Toast.makeText(this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                });
+
         }
     }
 }

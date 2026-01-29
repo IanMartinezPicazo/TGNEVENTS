@@ -14,6 +14,9 @@ public class Usuario {
 
     }
 
+    public Usuario() {
+    }
+
     public boolean isAdmin() {
         return admin;
     }

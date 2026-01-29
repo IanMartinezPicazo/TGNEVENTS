@@ -10,6 +10,9 @@ constraintlayout = "2.2.1"
 recyclerview = "1.4.0"
 playServicesMaps = "20.0.0"
 flexbox = "3.0.0"
+googleGmsGoogleServices = "4.4.4"
+firebaseAuth = "24.0.1"
+firebaseFirestore = "26.1.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -22,9 +25,12 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 flexbox = { group = "com.google.android.flexbox", name = "flexbox", version.ref = "flexbox" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 
 
 

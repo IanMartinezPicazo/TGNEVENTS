@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "970624479045",
+    "firebase_url": "https://tarragonaeventos-77610-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "tarragonaeventos-77610",
+    "storage_bucket": "tarragonaeventos-77610.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970624479045:android:dfa2ebcfff16026e68582c",
+        "android_client_info": {
+          "package_name": "com.example.ttgneventos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsecrKWkLR9Lx2sOtozBJKtLkxMSAAX-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970624479045:android:dfa1ada035372e5d68582c",
+        "android_client_info": {
+          "package_name": "com.t.tgneventos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsecrKWkLR9Lx2sOtozBJKtLkxMSAAX-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

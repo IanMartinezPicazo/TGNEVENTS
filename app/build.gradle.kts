@@ -6,6 +6,7 @@ plugins {
 android {
     namespace = "com.example.ttgneventos"
     compileSdk = 36
+    // Es recomendable usar el SDK 35 (Android 15), el 36 es muy experimental aún
 
     defaultConfig {
         applicationId = "com.example.ttgneventos"
@@ -33,15 +34,23 @@ android {
 }
 
 dependencies {
-
+    // Librerías base de UI
     implementation(libs.flexbox)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.recyclerview)
+    implementation(libs.flexbox)
+
+    // Google Maps
+    implementation(libs.play.services.maps)
+
+    // Firebase (Usando las variables del catálogo libs)
+    implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
-    implementation(libs.firebase.database)
+
+    // Tests (Eliminados duplicados)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="500dp"
+    android:layout_height="333dp"
     android:padding="5dp">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:cardBackgroundColor="#FFFFFFFF"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +71,7 @@
                             android:layout_height="wrap_content"
                             android:text="12:00"
                             android:textColor="#FFFFFF"
-                            android:textSize="18sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -100,7 +101,7 @@
                     android:text="Event"
                     android:textAlignment="center"
                     android:textColor="#323232"
-                    android:textSize="28sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <Space
@@ -114,7 +115,7 @@
                     android:text="Description"
                     android:textAlignment="center"
                     android:textColor="#323232"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
         </LinearLayout>

@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,9 +20,19 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 
+import java.security.KeyPair;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class MainMenu extends AppCompatActivity
 {
@@ -76,7 +88,7 @@ public final class MainMenu extends AppCompatActivity
         events.add(new Event(
                 "Vegan Food Festival",
                 "Food",
-                LocalDateTime.of(2024, 6, 22, 12, 0),
+                LocalDateTime.of(2024, 11, 2, 12, 0),
                 "Convention Center",
                 10.00,
                 "Explore over 50 vendors serving the best plant-based dishes."
@@ -86,7 +98,7 @@ public final class MainMenu extends AppCompatActivity
         events.add(new Event(
                 "Abstract Gallery Opening",
                 "Art",
-                LocalDateTime.of(2024, 10, 12, 18, 0),
+                LocalDateTime.of(2024, 11, 2, 18, 0),
                 "Modern Art Museum",
                 45.00,
                 "Exclusive first look at the 'Colors of Silence' collection."
@@ -134,24 +146,28 @@ public final class MainMenu extends AppCompatActivity
 
         // Sorts events by proximity of date
         events.sort((e1, e2) -> e1.getDateTime().compareTo(e2.getDateTime()));
+        Map<LocalDate, List<Event>> dates = new LinkedHashMap<>();
+        for(Event event : events)
+        {
+            LocalDate date = event.getDate();
+            if(!dates.containsKey(date)) dates.put(date, new ArrayList<>());
+            dates.get(date).add(event);
+        }
 
-        RecyclerView recyclerView = new RecyclerView(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        recyclerView.setLayoutParams(params);
+        List<Object> flattenedList = new ArrayList<>();
+        for(Map.Entry<LocalDate, List<Event>> entry : dates.entrySet())
+        {
+            flattenedList.add(entry.getKey());
+            flattenedList.addAll(entry.getValue());
+        }
 
+        RecyclerView eventDisplay = findViewById(R.id.eventDisplay);
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setJustifyContent(JustifyContent.FLEX_START);
-        recyclerView.setLayoutManager(layoutManager);
-
-        EventItemAdapter adapter = new EventItemAdapter(events);
-        recyclerView.setAdapter(adapter);
-
-        ViewGroup rootContainer = findViewById(R.id.main);
-        rootContainer.addView(recyclerView);
+        eventDisplay.setLayoutManager(layoutManager);
+        EventItemAdapter adapter = new EventItemAdapter(flattenedList);
+        eventDisplay.setAdapter(adapter);
     }
 }

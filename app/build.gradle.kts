@@ -35,6 +35,7 @@ android {
 
 dependencies {
     // Librerías base de UI
+    implementation(libs.flexbox)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

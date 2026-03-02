@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:970624479045:android:dfa2ebcfff16026e68582c",
+        "mobilesdk_app_id": "1:970624479045:android:7f53978d48b06d3868582c",
         "android_client_info": {
-          "package_name": "com.example.ttgneventos"
+          "package_name": "com.tgneventos"
         }
       },
       "oauth_client": [
         {
-          "client_id": "970624479045-9krg8og2q0grps4m91h4kdmnik6et5s2.apps.googleusercontent.com",
+          "client_id": "970624479045-ek914h82g025u7asg4nf81tv9gsj7c2e.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.ttgneventos",
+            "package_name": "com.tgneventos",
             "certificate_hash": "1c6809c0e9823a69ec25a940444419b02c6c1b61"
           }
         },
